@@ -11,15 +11,6 @@ namespace MyUtil
 {
     public static partial class UTIL
     {
-        public static class KEY
-        {
-            public const string APP_PATH = "Software\\Super169\\ServoCommander";
-            public const string LAST_CONNECTION_SERIAL = "Last Serial Port";
-            public const string LAST_CONNECTION_IP = "Last Network IP";
-            public const string LAST_CONNECTION_PORT = "Last Network Port";
-            public const string SERVO_VERSION = "Servo Version";
-        }
-
         public enum InfoType
         {
             message, alert, error
@@ -27,26 +18,29 @@ namespace MyUtil
 
         public delegate void DelegateUpdateInfo(string msg = "", UTIL.InfoType iType = UTIL.InfoType.message, bool async = false);
 
-        public static byte UBTCheckSum(byte[] data, int startIdx = 0)
-        {
-            int sum = 0;
-            for (int i = 2; i < 8; i++)
-            {
-                sum += data[startIdx + i];
-            }
-            sum %= 256;
-            return (byte)sum;
-        }
+        #region "Registry related"
 
-        public static byte UBTCheckSum(List<byte> data, int startIdx = 0)
+
+        public static class KEY
         {
-            int sum = 0;
-            for (int i = 2; i < 8; i++)
+            private static string _AppName = "";
+            public static string APP_PATH = "Software\\Super169\\";
+            public const string BASE_PATH = "Software\\Super169\\";
+
+            public const string LAST_CONNECTION_SERIAL = "Last Serial Port";
+            public const string LAST_CONNECTION_IP = "Last Network IP";
+            public const string LAST_CONNECTION_PORT = "Last Network Port";
+            public const string SERVO_VERSION = "Servo Version";
+
+            public static string AppName
             {
-                sum += data[startIdx + i];
+                set
+                {
+                    _AppName = value;
+                    APP_PATH = BASE_PATH + value;
+                }
             }
-            sum %= 256;
-            return (byte)sum;
+
         }
 
         public static bool WriteRegistry(string key, object value)
@@ -72,7 +66,6 @@ namespace MyUtil
             return success;
         }
 
-
         public static object ReadRegistry(string key)
         {
             object value = null;
@@ -96,6 +89,34 @@ namespace MyUtil
             }
             return value;
         }
+
+        #endregion "Registry related"
+
+        #region "UBT CheckSum calaction"
+
+
+        public static byte UBTCheckSum(byte[] data, int startIdx = 0)
+        {
+            int sum = 0;
+            for (int i = 2; i < 8; i++)
+            {
+                sum += data[startIdx + i];
+            }
+            sum %= 256;
+            return (byte)sum;
+        }
+
+        public static byte UBTCheckSum(List<byte> data, int startIdx = 0)
+        {
+            int sum = 0;
+            for (int i = 2; i < 8; i++)
+            {
+                sum += data[startIdx + i];
+            }
+            sum %= 256;
+            return (byte)sum;
+        }
+
 
         public static byte CalUBTCheckSum(byte[] data)
         {
@@ -125,6 +146,8 @@ namespace MyUtil
             return (byte)sum;
         }
 
+        #endregion "UBT CheckSum calaction"
+
 
         public static byte GetInputByte(string data)
         {
@@ -140,32 +163,6 @@ namespace MyUtil
         {
             string output = BitConverter.ToString(data);
             return output.Replace("-", separator);
-        }
-        
-        private static void tb_PreviewCommand(object sender, TextCompositionEventArgs e)
-        {
-            e.Handled = new Regex("[^0-9A-Fa-f.]+").IsMatch(e.Text);
-        }
-
-        private static void tb_PreviewInteger(object sender, TextCompositionEventArgs e)
-        {
-            e.Handled = new Regex("[^0-9.]+").IsMatch(e.Text);
-        }
-
-        private static void tb_PreviewIP(object sender, TextCompositionEventArgs e)
-        {
-            e.Handled = new Regex("[^0-9]+").IsMatch(e.Text);
-        }
-
-
-        private static void tb_PreviewHex(object sender, TextCompositionEventArgs e)
-        {
-            e.Handled = new Regex("[^0-9A-F]+").IsMatch(e.Text);
-        }
-
-        private static void tb_PreviewHexMix(object sender, TextCompositionEventArgs e)
-        {
-            e.Handled = new Regex("[^0-9A-F]+[.]?").IsMatch(e.Text);
         }
 
     }
