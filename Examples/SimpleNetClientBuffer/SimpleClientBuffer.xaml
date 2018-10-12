@@ -1,0 +1,16 @@
+﻿<Window x:Class="SimpleNetClientBuffer.SimpleClientBuffer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SimpleNetClientBuffer"
+        mc:Ignorable="d"
+        Title="SimpleClient - Buffer Mode" Height="450" Width="800" MinHeight="200" MinWidth="400">
+    <Grid>
+        <Button x:Name="btnConnect" Content="Connect" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top" Width="75" Click="btnConnect_Click" Height="23"/>
+        <TextBox x:Name="tbMsg" Height="23" Margin="90,7,170,0" TextWrapping="NoWrap" Text="Hi, I am SimpleNet Buffered Client!" VerticalAlignment="Top" />
+        <Button x:Name="btnSend" Content="Send" Margin="0,7,90,0" VerticalAlignment="Top" Click="btnSend_Click" Height="23" IsEnabled="False" HorizontalAlignment="Right" Width="75"/>
+        <Button x:Name="btnCheck" Content="Check" Margin="0,7,10,0" VerticalAlignment="Top" Click="btnCheck_Click" Height="23" IsEnabled="False" HorizontalAlignment="Right" Width="75"/>
+        <TextBox x:Name="tbLog" Margin="10,35,10,10" TextWrapping="Wrap" Text="" VerticalScrollBarVisibility="Auto"/>
+    </Grid>
+</Window>

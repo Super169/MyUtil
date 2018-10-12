@@ -1,0 +1,18 @@
+﻿<Window x:Class="SimpleNetServer.SimpleServer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SimpleNetServer"
+        mc:Ignorable="d"
+        Title="SimpleServer (By Super169)" Height="450" Width="800" MinHeight="200" MinWidth="400">
+    <Grid>
+        <Button x:Name="btnStart" Content="Start" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top" Width="75" Click="btnStart_Click" Height="22"/>
+        <TextBox x:Name="tbMsg" Height="22" Margin="90,7,90,0" TextWrapping="NoWrap" Text="Hi, I am SimpleNet Server!" VerticalAlignment="Top" />
+        <Button x:Name="btnBroadcast" Content="Broadcast" Margin="0,7,10,0" VerticalAlignment="Top" Click="btnBroadcast_Click" Height="22" IsEnabled="False" HorizontalAlignment="Right" Width="75"/>
+        <TextBox x:Name="tbLog" Margin="10,66,10,10" TextWrapping="Wrap" Text="" VerticalScrollBarVisibility="Auto"/>
+        <Label Content="Target: " HorizontalAlignment="Left" Margin="90,35,0,0" VerticalAlignment="Top" Width="52"/>
+        <ComboBox x:Name="cboClient" Margin="147,35,90,0" VerticalAlignment="Top"/>
+        <Button x:Name="btnSend" Content="Send" Margin="0,35,10,0" VerticalAlignment="Top" Click="btnSend_Click" Height="22" IsEnabled="False" HorizontalAlignment="Right" Width="75"/>
+    </Grid>
+</Window>
