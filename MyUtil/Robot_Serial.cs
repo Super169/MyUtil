@@ -181,31 +181,5 @@ namespace MyUtil
             serialPort.Write(data, offset, count);
         }
 
-/*
-        #region UBTech specific command, should be moved to other library later
-
-        public bool SendUBTCommand(char ch, long expBytes, long maxMs = DEFAULT_COMMAND_TIMEOUT)
-        {
-            return SendUBTCommand(ch.ToString(), expBytes, maxMs);
-        }
-
-        public bool SendUBTCommand(string command, long expBytes, long maxMs = DEFAULT_COMMAND_TIMEOUT)
-        {
-            if (!serialPort.IsOpen) return false;
-            byte[] data = Encoding.Default.GetBytes(command);
-            return SendUBTCommand(data, data.Length, expBytes, maxMs);
-        }
-
-        public bool SendUBTCommand(byte[] command, int count, long expBytes, long maxMs = DEFAULT_COMMAND_TIMEOUT)
-        {
-            if (!serialPort.IsOpen) return false;
-            ClearSerialBuffer();
-            serialPort.Write(command, 0, count);
-            WaitForData(expBytes, maxMs);
-            return (rxBuffer.Count == expBytes);
-        }
-
-        #endregion
-*/
     }
 }

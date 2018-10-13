@@ -88,18 +88,31 @@ namespace MyUtil
                     UTIL.WriteRegistry(UTIL.KEY.LAST_CONNECTION_IP, parm.address.ToString());
                 }
                 UTIL.WriteRegistry(UTIL.KEY.LAST_CONNECTION_PORT, parm.port.ToString());
+                UpdateInfo(string.Format("成功连接到 {0}", connTarget), UTIL.InfoType.message);
             }
             else
             {
-                connTarget = "{" + connTarget + "} - failed";
+                UpdateInfo(string.Format("连接 {0} 失败", connTarget), UTIL.InfoType.error);
+                // connTarget = "{" + connTarget + "} - failed";
             }
             return client.Connected;
         }
 
         public override bool Disconnect()
         {
+            if (!isConnected)
+            {
+                UpdateInfo(string.Format("Network not yet connected"), UTIL.InfoType.alert);
+                return true;
+            }
+
             client.Disconnect();
-            if (client.Connected) return false;
+            if (client.Connected)
+            {
+                UpdateInfo(string.Format("未能断开 {0} 的连线", connTarget), UTIL.InfoType.error);
+                return false;
+            }
+            UpdateInfo(string.Format("成功断开了 {0} 的连线 ", connTarget), UTIL.InfoType.message);
             connTarget = null;
             return true;
         }

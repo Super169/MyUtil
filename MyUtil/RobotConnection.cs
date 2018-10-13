@@ -142,7 +142,7 @@ namespace MyUtil
             robot.ClearRxBuffer();
         }
 
-        public bool SendCommand(byte[] command, int count, long expBytes, long maxMs = -1)
+        public bool SendCommand(byte[] command, int count, long minBytes, long maxMs = -1)
         {
             if (maxMs == -1) maxMs = robot.DefaultCommandTimeout;
             if (robot == null) return false;
@@ -150,8 +150,8 @@ namespace MyUtil
             cmdEndTicks = 0;
             cmdStartTicks = DateTime.Now.Ticks;
             robot.Send(command, 0, count);
-            if (expBytes > 0) robot.WaitForData(expBytes, maxMs, out cmdEndTicks);
-            return (robot.Available == expBytes);
+            if (minBytes > 0) robot.WaitForData(minBytes, maxMs, out cmdEndTicks);
+            return (robot.Available >= minBytes);
         }
 
         public void SetSerialPorts(ComboBox comboPorts, string defaultPort = null)
