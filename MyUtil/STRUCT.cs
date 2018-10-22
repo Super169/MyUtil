@@ -10,7 +10,7 @@ namespace MyUtil
     {
         public enum TYPE
         {
-            BOOL, BYTE, INT8, INT16, INT32, INT64, UINT8, UINT16, UINT32, UINT64, CHAR
+            BOOL, BYTE, INT8, INT16, INT32, INT64, UINT8, UINT16, UINT32, UINT64, CHAR, STRUCT
         }
 
         private static int SizeOf(TYPE type)
@@ -32,6 +32,8 @@ namespace MyUtil
                 case TYPE.INT64:
                 case TYPE.UINT64:
                     return 8;
+                case TYPE.STRUCT:
+                    return 0;
 
             }
             throw new System.Exception(String.Format("STRUCT::SizeOf - Unexpected type: {0}", type.ToString()));
@@ -46,7 +48,29 @@ namespace MyUtil
             public int count;
             public int objSize;
             public readonly int size;
-            public byte[] buffer;
+            private byte[] buffer;
+            STRUCT child;
+
+            public byte[] dataBuffer
+            {
+                get
+                {
+                    if (type == TYPE.STRUCT) return child.buffer;
+                    return buffer;
+                }
+            }
+
+            public FIELD(int index, int offset, string name, STRUCT child)
+            {
+                this.index = index;
+                this.offset = offset;
+                this.name = name;
+                this.type = TYPE.STRUCT;
+                this.count = 1;
+                this.objSize = child.size;
+                size = objSize;
+                this.child = child;
+            }
 
             public FIELD(bool objAlignment, int index, int offset, string name, TYPE type, int count, int objSize = 0)
             {
@@ -368,6 +392,11 @@ namespace MyUtil
                 Array.Copy(data, 0, buffer, pos, objSize);
             }
 
+            public STRUCT GetSTRUCT()
+            {
+                return child;
+            }
+
             public T GetValue<T>(int index = 0)
             {
                 TypeCode tc = Type.GetTypeCode(typeof(T));
@@ -420,6 +449,17 @@ namespace MyUtil
                 }
                 throw new Exception(string.Format("SetValue::GetValue() - Invalid type: {0}", type));
             }
+
+            public void FillBuffer(byte[] source, int offset)
+            {
+                if (type == TYPE.STRUCT)
+                {
+                    child.LoadBuffer(source, offset);
+                } else
+                {
+                    Array.Copy(source, offset, buffer, 0, size);
+                }
+            }
         }
 
         private bool _objAlignment;
@@ -460,10 +500,10 @@ namespace MyUtil
                 FIELD fNew = new FIELD(_objAlignment, index, size, fSource.name, fSource.type, fSource.count);
                 if (copyValue)
                 {
-                    Array.Copy(fSource.buffer, fNew.buffer, fNew.size);
+                    Array.Copy(fSource.dataBuffer, fNew.dataBuffer, fNew.size);
                 }
                 _fields.Add(fNew);
-                size += fSource.size;
+                size = fNew.offset + fNew.size;
             }
         }
 
@@ -695,7 +735,8 @@ namespace MyUtil
         {
             foreach (FIELD f in _fields)
             {
-                Array.Copy(buffer, f.offset, f.buffer, 0, f.size);
+                // Array.Copy(buffer, f.offset, f.dataBuffer, 0, f.size);
+                f.FillBuffer(buffer, f.offset);
             }
         }
 
@@ -705,17 +746,18 @@ namespace MyUtil
             ResetFields();
         }
 
-        public bool LoadBuffer(byte[] data)
+        public bool LoadBuffer(byte[] data, int offset = 0)
         {
+            if (offset < 0) throw new Exception("STRUCT::LoadBuffer - Invalid offset");
             InitBuffer();
-            if ((size <= 0) || (buffer == null) || (buffer.Length == 0))
+            if ((size <= 0) || (buffer == null) || (buffer.Length == 0) || (buffer.Length <= offset))
             {
                 throw new System.Exception("STRUCT::LoadBuffer - No data field defined");
             }
 
             for (int i = 0; i < buffer.Length; i++)
             {
-                buffer[i] = (i < data.Length ? data[i] : (byte)0);
+                buffer[i] = (i < data.Length ? data[offset + i] : (byte)0);
             }
             ResetFields();
             return true;
@@ -730,7 +772,7 @@ namespace MyUtil
             }
             foreach (FIELD f in _fields)
             {
-                Array.Copy(f.buffer, 0, buffer, f.offset, f.size);
+                Array.Copy(f.dataBuffer, 0, buffer, f.offset, f.size);
             }
         }
 

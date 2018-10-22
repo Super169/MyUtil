@@ -156,6 +156,9 @@ namespace MyUtil
             long endTicks = DateTime.Now.Ticks + maxMs * TimeSpan.TicksPerMillisecond;
             while (DateTime.Now.Ticks < endTicks)
             {
+                // Always give extra 1ms to retrieve data
+                if (rxBuffer.Count > 0) System.Threading.Thread.Sleep(1);
+
                 if (rxBuffer.Count >= minBytes)
                 {
                     cmdEndTicks = DateTime.Now.Ticks;

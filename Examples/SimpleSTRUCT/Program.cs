@@ -142,9 +142,9 @@ namespace SimpleSTRUCT
             a1.SetValue("false", false);
 
             DumpSTRUCT(a1, "STRUCT filled use SetValue");
-
+            
             string s;
-
+            /*
             Console.WriteLine("\n");
             Console.WriteLine("Get content using Get<Type>\n");
             Console.WriteLine(string.Format("{0,-10} : 0x{1:X2}", "byte", a1.GetNumeric<byte>("byte")));
@@ -204,7 +204,7 @@ namespace SimpleSTRUCT
 
             a3.Copy(a1, true);
             DumpSTRUCT(a3, "Copy value with Copy");
-
+            */
             STRUCT a4 = new STRUCT(false);
             a4.Clone(a1, true);
             DumpSTRUCT(a4, "Clone STRUCT using Clone with copy value");
