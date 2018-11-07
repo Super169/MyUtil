@@ -11,7 +11,7 @@ namespace MyUtil
 {
     public static partial class UI
     {
-        public static void UpdateTextbox(System.Windows.Controls.TextBox tb, string xml, bool async = false)
+        public static void UpdateTextbox(System.Windows.Controls.TextBox tb, string msg, bool async = false)
         {
             if (System.Windows.Threading.Dispatcher.FromThread(System.Threading.Thread.CurrentThread) == null)
             {
@@ -19,17 +19,17 @@ namespace MyUtil
                 {
                     System.Windows.Application.Current.Dispatcher.BeginInvoke(
                       System.Windows.Threading.DispatcherPriority.Normal,
-                      (Action)(() => UpdateTextbox(tb, xml)));
+                      (Action)(() => UpdateTextbox(tb, msg)));
                 }
                 else
                 {
                     System.Windows.Application.Current.Dispatcher.Invoke(
                       System.Windows.Threading.DispatcherPriority.Normal,
-                      (Action)(() => UpdateTextbox(tb, xml)));
+                      (Action)(() => UpdateTextbox(tb, msg)));
                 }
                 return;
             }
-            tb.Text = xml;
+            tb.Text = msg;
         }
     }
 }
