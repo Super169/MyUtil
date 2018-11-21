@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace MyUtil
@@ -30,6 +31,12 @@ namespace MyUtil
                 return;
             }
             tb.Text = msg;
+        }
+
+        public static bool MessageConfirm(String msg)
+        {
+            MessageBoxResult result = MessageBox.Show(msg, "請確定", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            return (result == MessageBoxResult.Yes);
         }
     }
 }
