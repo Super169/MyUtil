@@ -12,6 +12,22 @@ namespace MyUtil
     {
         public static class FILE
         {
+            public static string AppFilePath()
+            {
+                return System.AppDomain.CurrentDomain.BaseDirectory;
+            }
+
+            public static string AppFilePath(string file)
+            {
+                return System.IO.Path.Combine(AppFilePath(), file);
+            }
+
+            public static string AppFilePath(string subFolder, string file)
+            {
+                var directory = AppFilePath(subFolder);
+                return System.IO.Path.Combine(directory, file);
+            }
+
             public static bool AppendToFile(string msg, string fileName)
             {
                 bool success = true;
