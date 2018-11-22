@@ -17,6 +17,7 @@ namespace MyUtil
         };
 
         public delegate void DelegateUpdateInfo(string msg = "", UTIL.InfoType iType = UTIL.InfoType.message, bool async = false);
+        public delegate void DelegateCommandHandler(string command, object parm);
 
         #region "Registry related"
 
