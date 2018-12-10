@@ -149,13 +149,17 @@ namespace MyUtil
 
         #endregion "UBT CheckSum calaction"
 
+        public static int GetInputInteger(string data)
+        {
+            return Convert.ToInt32(data, 10);
+        }
 
         public static byte GetInputByte(string data)
         {
             if (data.EndsWith("."))
             {
                 data = data.Substring(0, data.Length - 1);
-                return (byte)Convert.ToInt32(data, 10);
+                return (byte) GetInputInteger(data);
             }
             return (byte)Convert.ToInt32(data, 16);
         }
