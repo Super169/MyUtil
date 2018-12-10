@@ -156,7 +156,7 @@ namespace MyUtil
 
         public void SetSerialPorts(ComboBox comboPorts, string defaultPort = null)
         {
-            serial.SetSerialPorts(comboPorts, defaultPort);
+            serial.SetSerialPorts(comboPorts, defaultPort,250);
         }
 
         public void SetNetConnection(TextBox txtIP, TextBox txtPort)

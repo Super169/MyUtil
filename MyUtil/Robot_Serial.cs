@@ -152,10 +152,31 @@ namespace MyUtil
             return SerialPort.GetPortNames();
         }
 
-        public void SetSerialPorts(ComboBox comboPorts, string defaultPort = null)
+        public void SetSerialPorts(ComboBox comboPorts, string defaultPort = null, int excludePort = 65535)
         {
             if (defaultPort == null) defaultPort = LastConnection;
-            comboPorts.ItemsSource = SerialPort.GetPortNames();
+            // comboPorts.ItemsSource = SerialPort.GetPortNames();
+            string[] ports = SerialPort.GetPortNames();
+            comboPorts.Items.Clear();
+            for (int i = 0; i < ports.Length; i++)
+            {
+                string port = ports[i];
+                if (port.StartsWith("COM"))
+                {
+                    try
+                    {
+                        int portNum = int.Parse(port.Replace("COM", ""));
+                        // Try to exculde virtual ports
+                        if (portNum >= excludePort) port = "";
+                    }
+                    catch
+                    {
+                        port = "";
+                    }
+                }
+                if (port != "") comboPorts.Items.Add(port);
+            }
+
             if (comboPorts.Items.Count > 0)
             {
                 if ((defaultPort == null) || (defaultPort.Trim() == ""))
