@@ -78,8 +78,9 @@
     <Compile Include="STRUCT.cs" />
     <Compile Include="UI.cs" />
     <Compile Include="UTIL.cs" />
-    <Compile Include="UTIL.FILE.cs" />
+    <Compile Include="UTIL_FILE.cs" />
     <Compile Include="UTIL_INPUT.cs" />
+    <Compile Include="UTIL_WEB.cs" />
     <Compile Include="XML.cs" />
   </ItemGroup>
   <ItemGroup>
