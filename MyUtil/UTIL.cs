@@ -247,5 +247,20 @@ namespace MyUtil
             return sb.ToString();
         }
 
+        public static byte Int2Int8(int value)
+        {
+            // There does not have Int8 in c#, use byte for passing to mcu
+            // return 0 if out of range
+            if ((value < -128) || (value > 127)) return 0;
+            // return value directly for positive
+            if (value >= 0) return (byte)value;
+            return (byte)(256 + value);
+        }
+
+        public static int Int82Int(byte value)
+        {
+            if (value < 128) return (int)value;
+            return ((int)value - 256);
+        }
     }
 }
